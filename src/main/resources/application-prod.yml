@@ -1,0 +1,12 @@
+server:
+  port: 8899
+  flyway:
+    baseline-on-migrate: true
+
+wx:
+  mp:
+    configs:
+      - appId: wx839d5e2b8c199be6
+        secret: 5192795b44417d1e96c2b16184979e5c
+        token: zxcasdqwe123
+        aesKey: utf-8
