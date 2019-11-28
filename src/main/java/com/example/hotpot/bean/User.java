@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
 @Setter
 @Table(name = "user")
 public class User {
-    @Id
-    private long id;
+    @Column(name = "id")
+    private Long id;
     @Column(name = "open_id")
     private String openId;
 
@@ -20,7 +19,7 @@ public class User {
     private String weiXinName;
 
     @Column(name = "sex")
-    private String sex;
+    private Integer sex;
 
     @Column(name = "city")
     private String city;
@@ -29,9 +28,9 @@ public class User {
     private String province;
 
     @Column(name = "status")
-    private String status;
+    private Integer status;
 
-    @Column(name = "creat_time")
+    @Column(name = "create_time")
     private String creatTime;
 
     @Column(name = "jifeng")
@@ -42,5 +41,4 @@ public class User {
 
     @Column(name = "phone")
     private String phone;
-
 }

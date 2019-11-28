@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>主界面</title>
+    <link rel="stylesheet" type="text/css" href="/scss/shop.css"/>
+    <link rel="stylesheet" type="text/css" href="/scss/main.css"/>
+    <link rel="stylesheet" href="/scss/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
+    <!--引入图片上传工具webuploader-->
+    <link rel="stylesheet" type="text/css" href="/webuploader/webuploader.css">
+    <script type="text/javascript" src="/jquery/jquery-2.1.1.min.js"></script>
+</head>
+<script type="text/javascript" src="/webuploader/webuploader.js"></script>
+<body>
+<form class="form-horizontal">
+    <div id="uploader-demo"><label>上传图片&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;</label>
+        <!--用来存放item-->
+        <div id="" style="margin-left:100px;">
+            <img id="logoImg" height="150" width="150" src="">
+            <input type="hidden" id="picPath" name="picPath" title="图片路径"/>
+        </div>
+        <div id="fileList" class="uploader-list"></div>
+
+        <div id="filePicker" style="margin-left:260px;">选择图片</div>
+        <button id="pictureUplocad" type="button" class="btn btn-primary">上传图片</button>
+        <button id="clearUplocad" type="button" class="btn btn-primary">清除</button>
+        <label style="color: red">(请上传288*288(长X宽)相素的图片)</label>
+    </div>
+
+<!--    </section>-->
+</form>
+</body>
+
+
+<script src="/jquery/jquery-2.1.1.min.js"></script>
+<script src="/jquery/layer/layer.js"></script>
+
+<script type="text/javascript">
+
+		var uploader = WebUploader.create({
+			auto:false,
+			// swf文件路径
+			swf: '/webuploader/Uploader.swf',
+			// 文件接收路径,实际上就是控制器的路径
+			server: '/hotpot/add/image/toUrl',     //这个是走服务的
+			// 选择文件的按钮。
+			pick: '#filePicker',
+			// 不压缩image, 默认如果是jpg，文件上传前会压缩一把再上传！
+			fileNumLimit: 1,
+			resize: false,
+			//设定文件大小上限 2M
+			fileSingleSizeLimit:2*1024*1024,
+			//可接受的文件类型
+			accept: {
+			title: 'Images',
+			extensions: 'gif,jpg,jpeg,bmp,png',
+			//此处一定要写得详细，如果使用'image/*'，chrome浏览器会出现打开资源管理器特别慢的bug！！！！！
+			mimeTypes: 'image/jpg,image/jpeg,image/png'
+			}
+			});
+			uploader.on( 'fileQueued', function( file ) {
+
+			$("#logoImg").parent("div").attr({
+			id: file.id
+			});
+
+			var $img = $("#logoImg");
+			// 创建缩略图
+			uploader.makeThumb(file, function(error, src) {
+			if (error) {
+			$img.replaceWith('<span>不能预览</span>');
+			return;
+			}
+			$img.attr('src', src);
+			console.log("-----------------------------"+src+"--------------------");
+
+			}, 360, 200); //150x150为缩略图尺寸  大图360*200，小图200*200
+
+			});
+			/**
+			* 验证文件格式、数量以及文件大小
+			*/
+			uploader.on("error", function(type) {
+			if (type == "Q_TYPE_DENIED") {
+                layer.msg("请上传图片格式文件", {time:1000, icon:5, shift:6});
+                } else if (type == "F_EXCEED_SIZE") {
+                layer.msg("文件大小不能超过2M", {time:1000, icon:5, shift:6});
+                } else if (type == "Q_EXCEED_NUM_LIMIT") {
+                layer.msg("只能上传一个图片", {time:1000, icon:5, shift:6});
+                }
+			});
+			// 文件上传过程中创建进度条实时显示。
+			uploader.on( 'uploadProgress', function( file, percentage ) {
+			var $li = $( '#'+file.id ),
+			$percent = $li.find('.progress span');
+
+			// 避免重复创建
+			if ( !$percent.length ) {
+                $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+			}
+
+			$percent.css( 'width', percentage * 100 + '%' );
+			});
+			// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+			uploader.on( 'uploadSuccess', function( file,response ) {                      //response 这个是服务返回过来的的参数
+			//给一个隐藏的标签赋值
+			console.log(response._raw);
+			$("#picPath").val(response._raw);
+
+			$( '#'+file.id ).addClass('upload-state-done');
+			layer.open({title: '返回图片url',content: response._raw});
+			});
+
+			// 文件上传失败，显示上传出错。
+			uploader.on( 'uploadError', function( file ) {
+                var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
+
+                // 避免重复创建
+                if ( !$error.length ) {
+                $error = $('<div class="error"></div>').appendTo( $li );
+                }
+
+			$error.text('上传失败');
+			});
+			// 完成上传完了，成功或者失败，先删除进度条。
+			uploader.on( 'uploadComplete', function( file ) {
+			$( '#'+file.id ).find('.progress').remove();
+			});
+
+		$("#pictureUplocad").click(function () {
+
+            if(uploader.getFiles().length<=0){
+                layer.msg("没有需要上传的文件", {time:1000, icon:5, shift:6});
+                return;
+            }
+            uploader.upload();
+    	});
+
+    	$("#clearUplocad").click(function () {
+
+            if(uploader.getFiles().length > 0){
+                layer.msg("文件文件", {time:1000, icon:5, shift:6});
+                return;
+            }
+    	});
+</script>
+
+
+</html>

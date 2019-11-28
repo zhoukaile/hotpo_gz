@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>主界面</title>
+        <link rel="stylesheet" type="text/css" href="/scss/shop.css"/>
+        <link rel="stylesheet" type="text/css" href="/scss/main.css"/>
+        <link rel="stylesheet" href="/scss/header.css"/>
+        <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
+        <!--引入图片上传工具webuploader-->
+        <link rel="stylesheet" type="text/css" href="/webuploader/webuploader.css">
+        <script type="text/javascript" src="/jquery/jquery-2.1.1.min.js"></script>
+    </head>
+<script type="text/javascript" src="/webuploader/webuploader.js"></script>
+    <body>
+        <form class="form-horizontal">
+            <div class="input-file-show">
+                <div>
+                    <input type="file" name="FileUpload" id="FileUpload">
+                    <a class="layui-btn layui-btn-mini" id="btn_uploadimg">上传视频</a>
+                </div>
+                <div>
+                    <input type="hidden" name="video" id="video">
+                    <embed src="{$goodsInfo.video}" width="200" height="200"  id="videos">
+                    <p>如果你无法看到该视频,那么可能你的电脑不支持该文件格式。</p>
+                </div>
+
+            </div>
+        </form>
+    </body>
+
+<script src="/jquery/jquery-2.1.1.min.js"></script>
+<script src="/jquery/layer/layer.js"></script>
+
+<script type="text/javascript">
+    $("#btn_uploadimg").click(function(){
+        var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+        if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+            alert("请选择图片");
+            return;
+        }
+        var formFile = new FormData();
+        formFile.append("file", fileObj); //加入文件对象
+        var data = formFile;
+        $.ajax({
+            url: "/hotpot/add/image/toMediaId",
+            data: data,
+            type: "Post",
+            dataType: "json",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false, //必须
+            success: function (result) {
+            layer.open({title: '返回',content: '可以填写任意的layer代码'});
+                console.log(result);
+                alert(result.msg);
+                $("#video").val(result.data.file);
+            }
+        })
+    });
+</script>
+
+
+</html>

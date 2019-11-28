@@ -14,7 +14,7 @@ public class VideoBuilder extends AbstractBuilder {
     public WxMpXmlOutMessage build(String content, WxMpXmlMessage wxMessage,
                                    WxMpService service) {
 
-        WxMpXmlOutVideoMessage m = WxMpXmlOutMessage.VIDEO().mediaId(content).title("楠潮鲜火锅视频").description("吃火锅就到楠潮鲜")
+        WxMpXmlOutVideoMessage m = WxMpXmlOutMessage.VIDEO().mediaId(content).title("楠潮鲜火锅视频").description("吃火锅就到光山楠潮鲜")
             .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
             .build();
 

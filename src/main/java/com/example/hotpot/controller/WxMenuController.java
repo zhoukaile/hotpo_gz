@@ -1,4 +1,4 @@
-package com.example.hotpot.Controller;
+package com.example.hotpot.controller;
 
 import lombok.AllArgsConstructor;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -85,7 +85,7 @@ public class WxMenuController {
         button32.setUrl("http://v.qq.com/");
 
 
-        WxMenuButton button33 = new WxMenuButton();
+        /*WxMenuButton button33 = new WxMenuButton();
         button33.setType(MenuButtonType.VIEW);
         button33.setName("获取用户信息");
 
@@ -98,7 +98,7 @@ public class WxMenuController {
                     String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
                     WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             button33.setUrl(url);
-        }
+        }*/
 
 
         menu.getButtons().add(button1);
@@ -111,7 +111,7 @@ public class WxMenuController {
 
         button3.getSubButtons().add(button31);
         button3.getSubButtons().add(button32);
-        button3.getSubButtons().add(button33);
+//        button3.getSubButtons().add(button33);
 
         this.wxService.switchover(appid);
         return this.wxService.getMenuService().menuCreate(menu);

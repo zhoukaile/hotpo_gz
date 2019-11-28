@@ -1,10 +1,7 @@
-package com.example.hotpot.Controller;
+package com.example.hotpot.controller;
 
-import com.example.hotpot.Service.ReplyMessageService;
-import com.example.hotpot.build.ImageBuilder;
+import com.example.hotpot.service.ReplyMessageService;
 import com.example.hotpot.build.NewsBuilder;
-import com.example.hotpot.build.TextBuilder;
-import com.example.hotpot.build.VideoBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/wx/portal/{appid}")
-//@RequestMapping("/wx/portal")
 public class WxPortalController {
 
     private final WxMpService wxService;
@@ -85,11 +81,7 @@ public class WxPortalController {
                 //说明是第一次关注
                 NewsBuilder newsBuilder = new NewsBuilder();
                 outMessage = newsBuilder.build("", inMessage,wxService );
-                /*TextBuilder textBuilder = new TextBuilder();
-                outMessage = textBuilder.build("欢迎关注", inMessage, wxService);*/
-                /*ImageBuilder image = new ImageBuilder();
-                outMessage = image.build("81QyQtpuoXw4wVz4CXRNd6l3qd0CcRdDDFR249IHBHwPriZ9IgzK9k9b_cIOofzG",
-                        inMessage, wxService);*/
+
                 return outMessage.toXml();
             }
             //根据用户发的消息去被动回复

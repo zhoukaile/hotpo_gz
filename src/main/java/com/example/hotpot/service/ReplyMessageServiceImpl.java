@@ -1,4 +1,4 @@
-package com.example.hotpot.Service;
+package com.example.hotpot.service;
 
 import com.example.hotpot.build.ImageBuilder;
 import com.example.hotpot.build.TextBuilder;
@@ -15,34 +15,22 @@ public class ReplyMessageServiceImpl implements ReplyMessageService{
 
     @Override
     public WxMpXmlOutMessage replyMessageByText(String type, WxMpXmlMessage wxMessage, WxMpService service) {
-
-        WxMpXmlOutMessage build = null;
-
-
-        /**
-         * 第一次关注公众号
-         */
-        if ("event".equals(type) && "subscribe".equals(wxMessage.getEvent())) {
-            TextBuilder text = new TextBuilder();
-            build = text.build("你 来 了", wxMessage, service);
-        }
-
         /**
          * 文字回复
          * 1 图片
          * 2  视屏
          */
-
+        WxMpXmlOutMessage build = null;
         if ("text".equals(type)) {
             TextBuilder textBuilder = new TextBuilder();
 
             if ("1".equals(wxMessage.getContent())) {
                 ImageBuilder image = new ImageBuilder();
-                build = image.build("81QyQtpuoXw4wVz4CXRNd6l3qd0CcRdDDFR249IHBHwPriZ9IgzK9k9b_cIOofzG",
+                build = image.build("S4MJxaurMcbu7veVUibTybEFfQl2ix_K6NYq69ozuRWr9NT0laUfzI_QcZ96mrPk",
                         wxMessage, service);
             } else if ("2".equals(wxMessage.getContent())) {
                 VideoBuilder video = new VideoBuilder();
-                build = video.build("go0vHpf65IXluKHmhp9kfp4TlA9eUX_pRCsLlg_gkgj1fIePnf8KJdrikwyLDYvl",
+                build = video.build("5lpRqnjSKIntZMqDFdOIhiqnGSbY0P_5_X4-u9NKtYUd0PD4-FZH-Jc3DpGzCDKE",
                         wxMessage, service);
             } else {
                 TextBuilder text = new TextBuilder();

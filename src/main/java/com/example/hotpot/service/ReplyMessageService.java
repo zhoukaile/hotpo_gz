@@ -1,4 +1,4 @@
-package com.example.hotpot.Service;
+package com.example.hotpot.service;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
